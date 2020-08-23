@@ -193,6 +193,10 @@
     <Content Include="Views\Shared\Backward.cshtml" />
     <Content Include="Views\Lover\AboutMe.cshtml" />
     <Content Include="Views\Lover\UpdateProfile.cshtml" />
+    <Content Include="Views\Lover\LoverNotification.cshtml" />
+    <Content Include="Views\Shared\Notification.cshtml" />
+    <Content Include="Views\Lover\ShowLoverProfile.cshtml" />
+    <Content Include="Views\Lover\ConnectedLover.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
