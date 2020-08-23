@@ -1,0 +1,83 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "ShowLoverProfile";
+    Layout = "~/Views/Shared/Backward.cshtml";
+    DBFront df = new DBFront();
+    int Requester = ViewBag.Requester;
+    DataTable dt = df.getAllByQuery("select *,convert(nvarchar(max),decryptByPassPhrase('root@',Phone)) as Phones from Lover where ID=" + Requester);
+}
+<style>
+    td {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgba(255,0,0,0.7);
+        color: white;
+    }
+
+    tr {
+        margin: 90px;
+    }
+
+    hr {
+        border-bottom: 1px solid red;
+    }
+
+    span {
+        margin-left: 20px;
+    }
+
+    #DetailLayout {
+        text-align: left;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: rgba(255,0,0,0.7);
+        color: white;
+    }
+
+    #ButtonLayout {
+        background-color: rgba(255,0,0,0.7);
+        color: white;
+        padding: 10px;
+        border-color: rgba(255,0,0,0.7);
+        padding-left: 10%;
+        padding-right: 10%;
+        border-radius: 10px;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    center img {
+        border: 1px solid darkred;
+        border-radius: 50%;
+    }
+</style>
+<center>
+    <div style="width: 90%;overflow:auto;margin-top:60px;">
+        @{ foreach (DataRow rows in dt.Rows)
+            {
+                string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + rows["ID"], "Name");
+                <center>
+                    @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + rows["ID"]))
+                    {
+                        <img class="img-fluid" src="~/ProfilePicture/@ProfilePicture" width="120">
+                    }
+                    else
+                    {
+                        <img class="img-fluid" src="~/Image/DefaultProfile.png" width="120">
+                    }
+                </center><hr /><br />
+                <div style="width: 90%">
+                    <div id="DetailLayout"><span>Name</span><span>@rows["Name"]</span></div>
+                    <div id="DetailLayout"><span>Phone</span><span>@rows["Phones"]</span></div>
+                    <div id="DetailLayout"><span>Address</span><span>@rows["Address"]</span></div>
+                    <div id="DetailLayout"><span>Age</span><span>@rows["Age"]</span></div>
+                    <div id="DetailLayout"><span>Height</span><span>@rows["height"]</span></div>
+                    <a href="AcceptRequester?Requester=@rows["ID"]"><button id="ButtonLayout">လက်ခံမည်</button></a>
+                </div>
+            }
+        }
+    </div>
+</center>
+

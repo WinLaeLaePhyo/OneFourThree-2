@@ -1,5 +1,10 @@
 ﻿<html>
 <head>
+    @using OneFourThree.App_Code; 
+    @{ 
+        DBFront df = new DBFront();
+        int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="~/Content/w3.css" rel="stylesheet" />
     <style>
@@ -36,6 +41,26 @@
             font-size: 80%;
             color:white;
         }
+        .notification {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            position: relative;
+            display: inline-block;
+            border-radius: 2px;
+        }
+            .notification .badge {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                padding: 3px 6px;
+                border-radius: 50%;
+                background-color: white;
+                color: red;
+            }
+        a:hover {
+            color:white;
+        }
     </style>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -43,7 +68,12 @@
 <body id="body">
     <header class="w3-top w3-red w3-xlarge" style="z-index: 1">
         <button class="w3-button w3-red w3-left w3-xlarge" onclick="w3_open()"><i class="fa fa-bars"></i></button>
-        <button class="w3-button w3-red w3-right w3-large"><i class="fa fa-bell"></i></button>
+        <button class="w3-button w3-hover-red w3-red w3-right w3-small" style="padding-top:7px;padding-right:15px;">
+            <a href="~/Lover/LoverNotification" class="notification">
+                <span style="font-size:15px;"><i class="fa fa-bell"></i></span>
+                    <span class="badge">@df.getCountByQuery("select * from Notification where Requester="+CurrentUserID)</span>
+                </a>
+        </button>
     </header>
 
     @*to open sidebar*@
@@ -63,7 +93,7 @@
     <div id="DivLayout"><a href="~/Lover/Dashboard"><img src="~/Image/HomeIcon.png" width="30"/></a></div>
     <div id="DivLayout"><a href="~/Lover/SearchOnMap"><img src="~/Image/mapIcon.png" width="30" /></a></div>
     <div id="DivLayout"><a id="img1" href="~/Customer/"><img src="~/Image/heartIcon.png" width="60px" /></a></div>
-    <div id="DivLayout"><a href="~/Customer/"><img src="~/Image/heartIcon.png" width="30" /></a></div>
+    <div id="DivLayout"><a href="~/Lover/ConnectedLover"><img src="~/Image/heartIcon.png" width="30" /></a></div>
     <div id="DivLayout"><a href="~/Lover/AboutMe"><img src="~/Image/meIcon.png" width="30" /></a></div>
 </footer>
 
