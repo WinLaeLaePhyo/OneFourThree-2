@@ -1,0 +1,86 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/w3.css" rel="stylesheet" />
+    <style>
+        header {
+            font-style: italic;
+            text-align: center;
+            color: white;
+            max-height: 40px;
+        }
+        footer {
+            font-style: italic;
+            text-align: center;
+            color: white;
+            height: 40px;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        #DivLayout {
+            padding-bottom: 15px;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 20%;
+            float: left;
+        }   
+        #DivLayout #img1{
+            bottom:1px;
+            position:fixed;
+            left: 43%;
+            right: 43%;
+        }
+        p {
+            font-size: 80%;
+            color:white;
+        }
+    </style>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body id="body">
+    <header class="w3-top w3-red w3-xlarge" style="z-index: 1">
+        <button class="w3-button w3-red w3-left w3-xlarge" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+        <button class="w3-button w3-red w3-right w3-large"><i class="fa fa-bell"></i></button>
+    </header>
+
+    @*to open sidebar*@
+        <div class="w3-sidebar w3-top w3-bar-block w3-border-right w3-animate-left w3-red" style="display:none;text-decoration: none;z-index: 100" id="mySidebar">
+            <button onclick="w3_close()" class="w3-bar-item w3-small w3-white w3-text-red w3-center">&hearts; <i>Close</i> &hearts;</button><br>
+            <center>
+                <div style="width:80%">
+                    <a href="~/Lover/Dashboard"><button style="margin-bottom:7px;" class="w3-bar-item w3-blue w3-center"><i class="fa fa-home w3-left"></i>Dashboard</button></a>
+                    <a href="~/Lover/ChangePin"><button style="margin-bottom:7px;" class="w3-bar-item w3-blue w3-center"><i class="fa fa-bell w3-left"></i>ChangePin</button></a>
+                    <a href="~/Lover/Logout"><button style="margin-bottom:7px;" class="w3-bar-item w3-blue w3-center"><i class="fa fa-sign-out w3-left"></i>Logout</button></a>
+                    <button style="margin-bottom:7px;" class="w3-bar-item w3-blue w3-center"><i class="fa fa-users w3-left"></i>Menu1</button>
+                </div>
+            </center>
+        </div>
+    @RenderBody()
+<footer class="w3-bottom w3-red w3-text-white" style="border-top:1px solid black;">
+    <div id="DivLayout"><a href="~/Lover/Dashboard"><img src="~/Image/HomeIcon.png" width="30"/></a></div>
+    <div id="DivLayout"><a href="~/Lover/SearchOnMap"><img src="~/Image/mapIcon.png" width="30" /></a></div>
+    <div id="DivLayout"><a id="img1" href="~/Customer/"><img src="~/Image/heartIcon.png" width="60px" /></a></div>
+    <div id="DivLayout"><a href="~/Customer/"><img src="~/Image/heartIcon.png" width="30" /></a></div>
+    <div id="DivLayout"><a href="~/Lover/AboutMe"><img src="~/Image/meIcon.png" width="30" /></a></div>
+</footer>
+
+    <script>
+
+        function w3_open() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById('sidebar').style.opacity = "100%";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("mySidebar").style.animate = "right";
+            document.getElementById('body').style.opacity = "100%";
+        }
+    </script>
+</body>
+</html>
+

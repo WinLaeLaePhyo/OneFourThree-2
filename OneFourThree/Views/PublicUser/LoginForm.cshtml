@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "LoginForm";
+    Layout = "~/Views/Shared/Index.cshtml"; ;
+    if (TempData["Message"] != null)
+    {
+        <script>
+        window.alert('@Html.Raw(TempData["Message"])');
+        </script>
+    }
+}
+
+<style>
+    #ButtonLayout {
+        margin-left: 30%;
+        border-radius: 40px;
+        width: 200px;
+        background-color: red;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: white;
+    }
+
+    #FormLayout {
+        z-index: 100;
+    }
+</style>
+<form id="FormLayout" action="~/PublicUser/ProcessLoginForm" method="post">
+    <center>
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Phone" type="number" name="Phone" style="width:200px" required><br>
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Password" type="number" name="Pin" style="width:200px" required><br><br>
+    </center>
+    <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Next">
+</form>

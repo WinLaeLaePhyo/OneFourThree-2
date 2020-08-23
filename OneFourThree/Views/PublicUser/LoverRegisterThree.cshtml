@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "LoverRegisterThree";
+    Layout = "~/Views/Shared/Index.cshtml";
+    string Name = TempData["Name"].ToString();
+    string Phone = TempData["Phone"].ToString();
+    string Email = TempData["Email"].ToString();
+    string Address = TempData["Address"].ToString();
+    string Height = TempData["Height"].ToString();
+    string LoverType = TempData["LoverType"].ToString();
+    string TownID = TempData["TownID"].ToString();
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<style>
+    #map {
+        display: none;
+    }
+
+    #ButtonLayout {
+        margin-left: 30%;
+        border-radius: 40px;
+        width: 200px;
+        background-color: red;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: white;
+    }
+
+    #FormLayout {
+        z-index: 100;
+    }
+</style>
+<div id="map"></div>
+<form id="FormLayout" action="~/PublicUser/ProcessLoverRegisterThree?Name=@Name&Phone=@Phone&Email=@Email&Address=@Address&Height=@Height&LoverType=@LoverType&TownID=@TownID" method="post">
+    <center>
+        <input type="hidden" name="Location" id="Location" />
+        <div id="map"></div>
+        <input type="hidden" name="Lat" id="Lat" />
+        <input type="hidden" name="Lng" id="Lng" />
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Age" type="number" name="Age" style="width:200px" required><br>
+        <select class="w3-select w3-border-red" name="Gender" style="width:200px">
+            <option value="">Choose Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br /><br />
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Password" type="password" name="Password" style="width:200px" required><br>
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Confirm Password" type="password" name="CPassword" style="width:200px" required><br><br />
+    </center>
+    <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Create">
+</form>
+<script>
+    var gmap, infoWindow;
+    var Lat, Lng, geocoder, Location;
+    let myPosition;
+    function getLocation() {
+        gmap = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 16.864301, lng: 96.117079 },
+            zoom: 19
+        });
+        infoWindow = new google.maps.InfoWindow();
+        geocoder = new google.maps.Geocoder;
+        // Try HTML5 geolocation.
+        function getUserLocation(map) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var point = new google.maps.LatLng(position.coords.latitude,
+                        position.coords.longitude);
+                    var name = position.coords.address;
+                    Lat = position.coords.latitude;
+                    Lng = position.coords.longitude;
+
+                    geocodeLatLng(Lat, Lng);
+                    if (typeof getUserLocation.user_marker == 'undefined') {
+                        getUserLocation.user_marker = new google.maps.Marker({
+                            position: point,
+                            map: gmap,
+                            icon: image
+                        });
+                        getUserLocation.user_marker.addListener('click', function () {
+                            alert(Lat + " " + Lng + " ");
+                        });
+                        getUserLocation.user_marker_window = new google.maps.InfoWindow({
+                            content: 'You'
+                        });
+
+                        google.maps.event.addListener(getUserLocation.user_marker, 'click', function () {
+                            getUserLocation.user_marker_window.open(getUserLocation.user_marker);
+                        });
+                    }
+                    getUserLocation.user_marker.setPosition(point);
+
+                });
+            }
+        }//end of getUserLocation();
+
+        function geocodeLatLng(lat, lng) {
+
+            var latlng = {
+                lat: lat,
+                lng: lng
+            };
+
+            geocoder.geocode({
+                'location': latlng
+            }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+
+                        //This is yout formatted address
+
+                        Location = results[0].formatted_address;
+
+                    } else {
+                        window.alert('No results found');
+                    }
+                }
+                Save();
+            });
+
+        }//End of geocodeLatLng();
+        if (navigator.geolocation) {
+            getUserLocation(gmap);
+        }
+    }//end of getLocation()
+    function Save() {
+        document.getElementById('Location').value = Location;
+        document.getElementById('Lat').value = Lat;
+        document.getElementById('Lng').value = Lng;
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXiwih0TpVCcZBCbpHOLNTfoyxEqPSQZQ&libraries=places&callback=getLocation"
+        async defer></script>

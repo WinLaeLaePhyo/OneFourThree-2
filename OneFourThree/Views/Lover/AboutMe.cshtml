@@ -1,0 +1,125 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "AboutMe";
+    Layout = "~/Views/Shared/Lover.cshtml";
+    if (TempData["Message"] != null)
+    {
+        <script>
+        window.alert('@Html.Raw(TempData["Message"])');
+        </script>
+    }
+    int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    DBFront df = new DBFront();
+    DataTable dt = df.getAllByQuery("select *,Convert(nvarchar(max),decryptByPassPhrase('root@',Phone)) as LPhone from Lover where ID=" + CurrentUserID);
+}
+<style>
+    center img {
+        border: 1px solid darkred;
+        border-radius: 50%;
+    }
+
+    #ContentLayout {
+        font-size: 15px;
+        color: darkblue;
+        overflow: auto;
+    }
+
+    #ListLayout {
+        align-content: center;
+        font-size: 15px;
+        box-shadow: 1px 1px 5px darkred;
+        padding: 15px;
+        color: darkred;
+        margin: 20px;
+    }
+
+        #ListLayout:hover {
+            box-shadow: 1px 1px 7px red;
+        }
+
+        #ListLayout i {
+            margin-right: 5%;
+            color: darkblue;
+            margin-left: 3%;
+        }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    p {
+        color: black;
+    }
+
+    table {
+        margin-top: 20px;
+    }
+
+    th {
+        padding: 10px;
+    }
+
+    body {
+        background-color: rgba(255,0,0,0.005);
+    }
+
+    a {
+        color: darkred;
+    }
+
+    hr {
+        border-color: darkred;
+    }
+</style>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+@{ foreach (DataRow rows in dt.Rows)
+    {
+        <div style="width: 90%;overflow:auto;margin-top:60px;">
+            <div style="width:50%;float:left;">
+                <center>
+                    <div style="max-width:50%;max-height:25%">
+                        @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + CurrentUserID))
+                        {
+                            string Name = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + CurrentUserID, "Name");
+                            <img class="img-fluid" id="output" src="~/ProfilePicture/@Name" width="100%"><br /><br>
+                        }
+                        else
+                        {
+                            <img class="img-fluid" id="output" src="~/Image/meIcon.png" s width="100%"><br /><br>
+                        }
+                     </div>
+                </center>
+            </div>
+            <div style="width:50%;float:left">
+                <center>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>@rows["Name"]</th>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <th>@rows["LPhone"]</th>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <th>@rows["Address"]</th>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+        </div>
+        }
+    }
+        <br />
+        <hr />
+        <div style="width: 90%;margin-left: 5%;">
+            <div id="ContentLayout">
+                <a href="~/Lover/UpdateProfile" style="color: darkblue;"><div id="ListLayout"><i class="fa fa-home" style="margin-right: 10%;"></i>Update Profile</div></a>
+                <a href="~/Lover/UpdateProfile" style="color: darkblue;"><div id="ListLayout"><i class="fa fa-home" style="margin-right: 10%;"></i>History</div></a>
+                <a href="~/Lover/UpdateProfile" style="color: darkblue;"><div id="ListLayout"><i class="fa fa-home" style="margin-right: 10%;"></i>Terms & Conditions</div></a>
+                <a href="~/Lover/UpdateProfile" style="color: darkblue;"><div id="ListLayout"><i class="fa fa-home" style="margin-right: 10%;"></i>About App</div></a>
+                <a href="~/Lover/UpdateProfile" style="color: darkblue;"><div id="ListLayout"><i class="fa fa-home" style="margin-right: 10%;"></i>Help</div></a>
+            </div>
+        </div>
