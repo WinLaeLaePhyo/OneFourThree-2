@@ -47,27 +47,33 @@
             border-radius: 50%;
         }
     </style>
-<center>
-    <div style="width: 90%;overflow:auto;margin-top:60px;">
-        <center>
-            <img class="img-fluid" src="~/Image/sampleProfilePicture.jpg" width="120">
-        </center><hr /><br />
-        <div style="width: 90%">
-                @{ foreach (DataRow rows in dt.Rows)
+    <center>
+        @{ foreach (DataRow rows in dt.Rows)
+            {
+                string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + rows["ID"], "Name");
+                <div style="width: 90%;overflow:auto;margin-top:60px;">
+                    <center>
+                    @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + rows["ID"]))
                     {
-                        string Location = rows["Location"].ToString() ;
+                        <img class="img-fluid" src="~/ProfilePicture/@ProfilePicture" width="120">
+                    }
+                    else { 
+                        <img class="img-fluid" src="~/Image/DefaultProfile.png" width="120">
+                    }
+                    </center><hr /><br />
+                    <div style="width: 90%">
                         <div id="DetailLayout"><span>Name</span><span>@rows["Name"]</span></div>
-                        <div id="DetailLayout"><span>Phone</span><span>@rows["Phones"]</span></div>
-                        <div id="DetailLayout"><span>Address</span><span>@rows["Address"]</span></div>
                         <div id="DetailLayout"><span>Age</span><span>@rows["Age"]</span></div>
                         <div id="DetailLayout"><span>Height</span><span>@rows["height"]</span></div>
-                        <a href="tel:@rows["Phones"]"><button id="ButtonLayout">Call</button></a>
+                        <a href="~/Lover/ConnectWithLover?LoverID=@rows["ID"]"><button id="ButtonLayout">Connect with @rows["Name"]</button></a>
+                        @*<a href="tel:@rows["Phones"]"><button id="ButtonLayout">Call</button></a>
                         <a href="https://www.google.com/maps/dir/?api=1&origin=Your+Location&destination=@Location&dir_action=navigate">
                             <button id="ButtonLayout">Map</button>
-                        </a>
-                    }
-                }
-        </div>
-    </div>
-</center>
+                        </a>*@
+                    </div>
+                </div>
+
+            }
+        }
+    </center>
 

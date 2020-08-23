@@ -52,10 +52,46 @@ namespace OneFourThree.Controllers
         }
         #endregion
 
-        #region ShowLoverDetail
+        #region ShowLoverDetail ConnectWithLover LoverNotification ShowLoverProfile AcceptRequester 
         public ActionResult ShowLoverDetail() {
             int LoverID = Convert.ToInt32(Request.QueryString["ID"]);
             ViewBag.LoverID = LoverID;
+            return View();
+        }
+        public ActionResult ShowLoverProfile()
+        {
+            int Requester = Convert.ToInt32(Request.QueryString["Requester"]);
+            ViewBag.Requester = Requester;
+            return View();
+        }
+        public ActionResult AcceptRequester() { 
+            int Requester = Convert.ToInt32(Request.QueryString["Requester"]);
+            string RequesterName = db.getStringByQuery("select * from Lover where ID="+Requester,"Name");
+            int Receiver = GetCurrentUserID();
+            db.ChangeByQuery("insert into RequesterReceiverConnection values("+Requester+","+Receiver+",'"+DateTime.Now+"')");
+
+            string Message = "သင်နှင့် ရင်းနှီးခွင့် လက်ခံလိုက်ပါသည်။";
+            p.setParameter(1, Requester.ToString());
+            p.setParameter(2, Message);
+            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'" + DateTime.Now + "')", 2, p);
+            TempData["Message"] = RequesterName+" နှင့်ချိတ်ဆက်ပြီးပါပြီ။";
+            return RedirectToAction("ConnectedLover"); ;
+        }
+        public ActionResult ConnectWithLover() {
+            string LoverID = Request.QueryString["LoverID"];
+            string Message = "သင်နှင့် ရင်းနှီးခွင့် တောင်းဆိုထားပါသည်။";
+            p.setParameter(1, LoverID);
+            p.setParameter(2, Message);
+            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'"+DateTime.Now+"')", 2,p);
+            return RedirectToAction("ConnectedLover");
+        }
+        public ActionResult LoverNotification() {
+            return View();
+        }
+        #endregion
+
+        #region ConnectedLover
+        public ActionResult ConnectedLover() {
             return View();
         }
         #endregion

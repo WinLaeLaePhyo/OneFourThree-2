@@ -1,0 +1,154 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "LoverNotification";
+    Layout = "~/Views/Shared/Notification.cshtml";
+    DBFront df = new DBFront();
+    int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    DataTable dt = df.getAllByQuery("select * from Notification where Receiver="+CurrentUserID);
+}
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .modalDialog {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 99999;
+            opacity: 0;
+            -webkit-transition: opacity 100ms ease-in;
+            -moz-transition: opacity 100ms ease-in;
+            transition: opacity 100ms ease-in;
+            pointer-events: none;
+        }
+
+            .modalDialog:target {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .modalDialog > div {
+                max-width: 800px;
+                width: 90%;
+                position: relative;
+                margin: 10% auto;
+                padding: 20px;
+                border-radius: 3px;
+                background: #fff;
+            }
+
+        #closes {
+            background-color: darkred;
+        }
+
+            #closes:hover {
+                background-color: red;
+            }
+
+        .close {
+            font-family: Arial, Helvetica, sans-serif;
+            background: darkred;
+            color: red;
+            line-height: 25px;
+            position: absolute;
+            right: -12px;
+            text-align: center;
+            top: -10px;
+            width: 34px;
+            height: 34px;
+            text-decoration: none;
+            font-weight: bold;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            -moz-box-shadow: 1px 1px 3px #000;
+            -webkit-box-shadow: 1px 1px 3px #000;
+            box-shadow: 1px 1px 3px #000;
+            padding-top: 5px;
+        }
+
+            .close:hover {
+                background: #000033;
+            }
+
+        .close1 {
+            font-family: Arial, Helvetica, sans-serif;
+            background: darkred;
+            color: red;
+            line-height: 25px;
+            position: absolute;
+            float: left;
+            text-align: center;
+            width: 34px;
+            height: 34px;
+            text-decoration: none;
+            font-weight: bold;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            -moz-box-shadow: 1px 1px 3px #000;
+            -webkit-box-shadow: 1px 1px 3px #000;
+            box-shadow: 1px 1px 3px #000;
+            padding-top: 5px;
+        }
+
+            .close1:hover {
+                background: #000033;
+            }
+        #Div3Layout {
+            align-content: center;
+            font-size: 15px;
+            box-shadow: 1px 1px 5px darkred;
+            padding: 10px;
+            color: darkred;
+            height: 60px;
+            margin-top: 20px;
+        }
+        #Div4Layout {
+            align-content: center;
+            font-size: 15px;
+            box-shadow: 1px 1px 5px darkred;
+            padding: 10px;
+            color: darkred;
+            height: 40px;
+            margin-top: 20px;
+        }
+    </style>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container" onload="write()">
+    <br /><br />
+    @{ foreach (DataRow row in dt.Rows)
+        {
+            string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + row["Requester"], "Name");
+            <div id="Div3Layout">
+                <div style="width:20%;float:left;max-height:30px"><img height="40px" src="~/ProfilePicture/@ProfilePicture" style="border-radius:50%;" /></div>
+                <div style="width:70%;float:left">@row["Message"]<br /><small>@row["Date"]</small></div>
+                @if(row["Message"].Equals("သင်နှင့် ရင်းနှီးခွင့် တောင်းဆိုထားပါသည်။")){
+                    <div style="width:10%;float:left;padding-top: 10px;padding-left:10px;"><a href="#openModal-about"><i class="fa fa-bars"></i></a></div>
+                }
+
+            </div>
+            <div id="openModal-about" class="modalDialog">
+                <div>
+                    <a href="#close" title="Close" class="close" style="opacity: 1">X</a>
+                    <center>
+                        <div id="ContentLayout" class="unicode">
+                            <a href="~/Lover/ShowLoverProfile?Requester=@row["Requester"]"><div id="Div4Layout" style="padding-top:10px;">View Profile</div></a>
+                            <a href="~/Lover/AcceptRequester?Requester=@row["Requester"]"><div id="Div4Layout" style="padding-top:10px;">Accept</div></a>
+                            <a href="~/Lover/CancelRequester?Requester=@row["Requester"]"><div id="Div4Layout" style="padding-top:10px;">Cancel</div></a>
+                        </div>
+                    </center>
+                </div>
+            </div>
+
+        }
+    }
+
+</div>

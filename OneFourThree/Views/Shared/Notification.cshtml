@@ -9,15 +9,18 @@
             color: white;
             max-height: 40px;
         }
+
         footer {
             font-style: italic;
             text-align: center;
             color: white;
             height: 40px;
         }
+
         a:hover {
             text-decoration: none;
         }
+
         #DivLayout {
             padding-bottom: 15px;
             padding-top: 5px;
@@ -25,16 +28,18 @@
             padding-right: 10px;
             width: 20%;
             float: left;
-        }   
-        #DivLayout #img1{
-            bottom:1px;
-            position:fixed;
-            left: 43%;
-            right: 43%;
         }
+
+            #DivLayout #img1 {
+                bottom: 1px;
+                position: fixed;
+                left: 43%;
+                right: 43%;
+            }
+
         p {
             font-size: 80%;
-            color:white;
+            color: white;
         }
     </style>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -43,6 +48,7 @@
 <body id="body">
     <header class="w3-top w3-red w3-xlarge" style="z-index: 1">
         <button class="w3-button w3-red w3-left w3-xlarge" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+        <button class="w3-button w3-red w3-centered w3-medium">Notification</button>
     </header>
     @RenderBody()
 
