@@ -1,0 +1,100 @@
+﻿
+@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "SearchOnMap";
+    Layout = "~/Views/Shared/Lover.cshtml";
+    string Gender = ViewBag.Gender.ToString();
+    int Age = ViewBag.Age;
+    if (TempData["Message"] != null)
+    {
+        <script>
+        window.alert('@Html.Raw(TempData["Message"])');
+        </script>
+    }
+
+}<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<style>
+    #map {
+        border: 1px solid darkred;
+        width: 90%;
+        height: 73%;
+    }
+
+    #FormLayout {
+        margin-top: 55px;
+    }
+
+    .ButtonLayout1 {
+        width: 30%;
+        color: white;
+        padding: 10px;
+        background-color: darkred;
+        border-width: 1px;
+        border-radius: 5px;
+    }
+</style>
+<center>
+    <form id="FormLayout" action="~/Lover/ProcessSearchOnMap" method="post">
+        <select class="ButtonLayout1" name="Gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="number" class="ButtonLayout1" name="Age" placeholder="Age" />
+        <input class="ButtonLayout1" type="submit" value="ရှာမည်။" />
+    </form>
+    <div id="map" style="display: block"></div>
+</center>
+<script>
+    var map;
+    function GetLocation() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+                lat: 19.397,
+                lng: 94.644
+            },
+            zoom: 12,
+            disableDefaultUI: true
+        });
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            var lat, lng;
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var marker = new google.maps.Marker({ position: pos, map: map, zoom: 13 });//, icon: '/Image/currentLocation.png' 
+                map.setCenter(pos);
+                lat = pos.lat;
+                lng = pos.lng;
+                showMarkers(lat, lng);
+            }, function () {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        }
+    }
+    function showMarkers(lat, lng) {
+        $.getJSON("https://localhost:44368/Lover/GetLover", { Lat: lat, Lng: lng, Gender: '@Gender', Age: @Age}, function (data) {
+            for (x in data) {
+                createMarkers(data[x].Element1, data[x].Element2, data[x].Element3);
+            }
+        });
+    }
+    function createMarkers(ID, Lat, Lng) {
+        var myLatLng = new google.maps.LatLng(Lat, Lng);
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            icon: '/Image/male.png'
+        });
+        marker.addListener("click", function () {
+            document.location = "ShowLoverDetail?ID=" + ID;
+        });
+        marker.setMap(map);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXiwih0TpVCcZBCbpHOLNTfoyxEqPSQZQ&libraries=places&callback=GetLocation"
+        async defer></script>

@@ -123,6 +123,8 @@
     <Content Include="App_Code\DBFront.cs" />
     <Content Include="App_Code\Email.cs" />
     <Compile Include="App_Code\ElementDataList.cs" />
+    <Compile Include="App_Code\Filter\CompanyFilter.cs" />
+    <Compile Include="App_Code\Filter\LoverFilter.cs" />
     <Compile Include="App_Code\ParameterBack.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -170,6 +172,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Sound\noti.mp3" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -201,6 +204,9 @@
     <Content Include="Views\Shared\Notification.cshtml" />
     <Content Include="Views\Lover\ShowLoverProfile.cshtml" />
     <Content Include="Views\Lover\ConnectedLover.cshtml" />
+    <Content Include="Views\Lover\FriendList.cshtml" />
+    <Content Include="Views\Lover\ChattingRoom.cshtml" />
+    <Content Include="Views\PublicUser\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

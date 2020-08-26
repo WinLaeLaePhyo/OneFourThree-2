@@ -1,0 +1,114 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "ChattingRoom";
+    Layout = "~/Views/Shared/PublicUser.cshtml";
+    int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    int Receiver = ViewBag.Receiver;
+    DBFront df = new DBFront();
+    string Name = df.getStringByQuery("select * from Lover where ID=" + Receiver, "Name");
+    DataTable dt = df.getAllByQuery("select * from (select Top 12 * from ChatMessages where (Sender="+CurrentUserID+" and Receiver="+Receiver+") or (Sender="+Receiver+" and Receiver="+CurrentUserID+") Order By ID Desc) t Order By ID Asc");
+}
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/w3.css" rel="stylesheet" />
+<style>
+    #Div3Layout {
+        float: right;
+        margin-right: 2%;
+        width: 80%;
+        font-size: 15px;
+        padding: 5px;
+        color: black;
+        margin-top: 5px;
+    }
+
+    #Div4Layout {
+        float: left;
+        width: 80%;
+        margin-left: 2%;
+        font-size: 15px;
+        padding: 5px;
+        color: darkred;
+        margin-top: 5px;
+    }
+
+    #TextLayout {
+        margin-left: 10px;
+        padding: 5px;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-radius: 20px;
+        font-size: 80%;
+        background-color: rgba(0,0,0,0.09);
+        border-bottom-left-radius: 6px;
+    }
+    #TextLayout1 {
+        margin-right: 15px;
+        padding: 5px;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-radius: 20px;
+        font-size: 80%;
+        background-color: rgba(255,0,0,1);
+        color: white;
+        border-bottom-right-radius: 6px;
+    }
+    #ToReload {
+        top: 40px;
+        position:fixed;
+    }
+</style>
+<body>
+    <header class="w3-top w3-red w3-small" style="z-index: 1">
+        <button class="w3-button w3-red w3-hover-red w3-left w3-xlarge" onclick="goBack()"><i class="fa fa-chevron-left"></i></button>
+        <p>@Name</p>
+    </header>
+    <div id="ToReload" style="width:100%;height: 80%;overflow: auto">
+        @{ foreach (DataRow row in dt.Rows)
+            {
+                if (row["Sender"].Equals(CurrentUserID))
+                {
+                    string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + CurrentUserID, "Name");
+                <div id="Div3Layout">
+                    <div style="width:10%;float:right;max-height:30px"><img height="30px" src="~/ProfilePicture/@ProfilePicture" style="border-radius:50%;" /></div>
+                    <div id="TextLayout1" style="float:right">@row["Message"]</div>
+                </div>
+                }
+                else
+                {
+                    string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + row["Sender"], "Name");
+                    <div id="Div4Layout">
+                        <div style="width:10%;float:left;max-height:30px"><img height="30px" src="~/ProfilePicture/@ProfilePicture" style="border-radius:50%;" /></div>
+                        <div id="TextLayout" style="float:left">@row["Message"]</div>
+                    </div>
+                }
+            }
+        }
+    </div>
+    <footer class="w3-bottom" style="border-top: 0.05px solid gray;padding: 5px;">
+        <form action="~/Lover/SaveMessage" method="post">
+            <input type="hidden" name="Receiver" value="@Receiver" />
+            <input class="w3-input w3-border-red" type="text" name="Message" style="width:80%;float:left;margin-left:5%;padding-left:10px" placeholder="Aa" />
+            <button type="submit" class="w3-button w3-xlarge" style="width:10%;float:right;margin-left:2%;margin-right:2%;color:red"><i class="fa fa-paper-plane"></i></button>
+        </form>
+    </footer>
+</body>
+<script>
+    window.onload = function () {
+        var objDiv = document.getElementById("ToReload");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    function goBack() {
+        window.history.back();
+    }
+    function ScrollBottom() {
+        var objDiv = document.getElementById('ToReload');
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    $(document).ready(function () {
+        setInterval(function () {
+            $('#ToReload').load('#ToReload');
+        }, 3000);
+    });
+</script>

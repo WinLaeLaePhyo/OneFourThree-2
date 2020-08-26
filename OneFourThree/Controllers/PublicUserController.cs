@@ -17,7 +17,18 @@ namespace OneFourThree.Controllers
             return View();
         }
 
-        #region Login
+        #region Login Logout
+        public ActionResult Logout()
+        {
+            Session.RemoveAll();
+            if (Request.Cookies["userInfo"] != null)
+            {
+                HttpCookie myCookie = new HttpCookie("userInfo");
+                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(myCookie);
+            }
+            return RedirectToAction("Index");
+        }
         public ActionResult LoginForm()
         {
             return View();
@@ -29,6 +40,12 @@ namespace OneFourThree.Controllers
             Authentication a = new Authentication();
             string Phone = Request.Form["Phone"];
             string Pin = Request.Form["Pin"];
+
+            HttpCookie userInfo = new HttpCookie("userInfo");
+            userInfo["Phone"] = Phone;
+            userInfo["Pin"] = Pin;
+            userInfo.Expires = DateTime.Now.AddDays(5);
+            Response.Cookies.Add(userInfo);
 
             if (a.checkUser(Phone, Pin))
             {

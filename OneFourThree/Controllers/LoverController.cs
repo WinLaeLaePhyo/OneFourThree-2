@@ -9,6 +9,7 @@ using OneFourThree.App_Code;
 
 namespace OneFourThree.Controllers
 {
+    [LoverFilter]
     public class LoverController : Controller
     {
         // GET: Lover
@@ -52,6 +53,30 @@ namespace OneFourThree.Controllers
         }
         #endregion
 
+        #region GetNotification - JSON GET
+        public JsonResult GetNotification()
+        {
+            var data = db.getCountByQuery("select * from Notification where Seen = 'False' and Receiver = " + GetCurrentUserID());
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region ChattingRoom SaveMessage
+        public ActionResult ChattingRoom() {
+            int Receiver = Convert.ToInt32(Request.QueryString["Requester"]);
+            ViewBag.Receiver = Receiver;
+            return View();
+        }
+        public ActionResult SaveMessage() {
+            string Receiver = Request.Form["Receiver"];
+            string Message = Request.Form["Message"];
+            p.setParameter(1, Receiver);
+            p.setParameter(2, Message);
+            db.ChangeByQueryParameter("insert into ChatMessages values("+GetCurrentUserID()+",@Parameter1,@Parameter2,'True','"+DateTime.Now+"')",2,p);
+            return RedirectToAction("ChattingRoom", new { Requester = Receiver });
+        }
+        #endregion
+
         #region ShowLoverDetail ConnectWithLover LoverNotification ShowLoverProfile AcceptRequester 
         public ActionResult ShowLoverDetail() {
             int LoverID = Convert.ToInt32(Request.QueryString["ID"]);
@@ -73,20 +98,34 @@ namespace OneFourThree.Controllers
             string Message = "သင်နှင့် ရင်းနှီးခွင့် လက်ခံလိုက်ပါသည်။";
             p.setParameter(1, Requester.ToString());
             p.setParameter(2, Message);
-            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'" + DateTime.Now + "')", 2, p);
+            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'" + DateTime.Now + "','False')", 2, p);
             TempData["Message"] = RequesterName+" နှင့်ချိတ်ဆက်ပြီးပါပြီ။";
-            return RedirectToAction("ConnectedLover"); ;
+            return RedirectToAction("FriendList"); ;
         }
         public ActionResult ConnectWithLover() {
             string LoverID = Request.QueryString["LoverID"];
             string Message = "သင်နှင့် ရင်းနှီးခွင့် တောင်းဆိုထားပါသည်။";
             p.setParameter(1, LoverID);
             p.setParameter(2, Message);
-            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'"+DateTime.Now+"')", 2,p);
-            return RedirectToAction("ConnectedLover");
+            db.ChangeByQueryParameter("insert into Notification values('" + GetCurrentUserID() + "',@parameter1,@parameter2,'"+DateTime.Now+"','False')", 2,p);
+            return RedirectToAction("Dashboard");
         }
         public ActionResult LoverNotification() {
+            db.ChangeByQuery("update Notification set Seen='True' where Receiver="+GetCurrentUserID());
             return View();
+        }
+        #endregion
+
+        #region FriendList Remove Lover
+        public ActionResult FriendList() {
+            return View();
+        }
+        public ActionResult RemoveLover()
+        {
+            int Requester = Convert.ToInt32(Request.QueryString["Requester"]);
+            int Receiver = Convert.ToInt32(Request.QueryString["Receiver"]);
+            db.ChangeByQuery("delete from RequesterReceiverConnection where Requester="+Requester+" and Receiver="+Receiver);
+            return RedirectToAction("FriendList");
         }
         #endregion
 

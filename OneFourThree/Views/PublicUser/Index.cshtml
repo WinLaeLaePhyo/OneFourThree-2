@@ -1,0 +1,100 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "IndexPage";
+    Layout = "~/Views/Shared/PublicUser.cshtml";
+    if (TempData["Message"] != null)
+    {
+        <script>
+        window.alert('@Html.Raw(TempData["Message"])');
+        </script>
+    }
+    DBFront df = new DBFront();
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .carousel-inner img {
+        height: 250px;
+    }
+    #ListLayout {
+        align-content: center;
+        font-size: 15px;
+        box-shadow: 1px 1px 5px darkred;
+        padding: 15px;
+        color: darkred;
+        margin: 20px;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+</style>
+<center style="margin-top:40px;">
+    <marquee diection="left" style="background-color: rgba(0,0,0,0.05);color:black;padding:10px;">Sai accepted Sak's friend request. </marquee>
+    <a href="~/Lover/SearchOnMap" style="color: darkblue;"><div id="ListLayout">သူငယ်ချင်း ရှာမည်</div></a>
+    <div style="width:90%">
+        <div id="demo" class="carousel slide" data-ride="carousel">
+            <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1"></li>
+                <li data-target="#demo" data-slide-to="2"></li>
+            </ul>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="~/Image/heartIcon.png" alt="Los Angeles">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/Image/meIcon.png" alt="Chicago">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/Image/homeIcon.png" alt="New York">
+
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+    <div>
+        <a href="~/PublicUser/LoginForm" style="color: darkblue;width:50%;float:left"><div id="ListLayout">Login</div></a>
+        <a href="~/PublicUser/LoverRegisterOne" style="color: darkblue;width:50%;float:left"><div id="ListLayout">CreateAccount</div></a>
+    </div><br /><br /><br /><br />
+    <a href="~/Lover/SearchOnMap" style="color: darkblue;"><div id="ListLayout">Covid ဆောင်ရန် ရှောင်ရန်များ</div></a>
+</center>
+
+
+<form style="display: none;" class="FormLayout" name="myForm" action="~/PublicUser/ProcessLoginForm" method="post">
+    @{
+        HttpCookie reqCookies = Request.Cookies["userInfo"];
+        if (reqCookies != null)
+        {
+            <h5 class="HeaderLayout" style="color:black"><span class="unicode">အကောင့်ဝင်ရန် အောက်ပါတို့ကို ဖြည့်ပါ။</span></h5><br><hr>
+            <input class="InputLayout" id="myPhone" type="number" name="Phone" value="@reqCookies["Phone"].ToString()" style="width:80%" required><br />
+            <input class="InputLayout" type="number" name="Pin" value="@reqCookies["Pin"].ToString()" style="width:80%" required><br />
+            <input class="ButtonLayout" type="submit" value="အကောင့်၀င်မည်။">
+        }
+        else
+        {
+            <input class="InputLayout" id="myPhone" type="number" name="Phone" value="" style="width:80%" required><br />
+            <input class="InputLayout" type="number" name="Pin" value="" style="width:80%" required><br />
+            <input class="ButtonLayout" type="submit" value="အကောင့်၀င်မည်။">
+        }
+    }
+</form>
+<script>
+    document.onload = autoSubmitForm();
+    function autoSubmitForm() {
+        if (document.getElementById("myPhone").value.length >= 1) {
+            document.forms["myForm"].submit();
+        }
+    }
+</script>
