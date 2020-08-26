@@ -12,18 +12,40 @@
 }
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <style>
+    body {
+        background-color: rgba(168,0,0,0.04);
+    }
+
     #ButtonLayout {
-        margin-left: 30%;
-        border-radius: 40px;
-        width: 200px;
-        background-color: red;
+        margin-left: 7%;
+        border-radius: 20px;
+        width: 230px;
+        background-color: rgba(255,0,0,0.8);
         padding-left: 20px;
         padding-right: 20px;
-        color: white;
+        outline: none;
+        color: whitesmoke;
+        border: 1px solid #ff00074d;
+        box-shadow: 0px 3px 5px #ff003b21;
     }
 
     #FormLayout {
         z-index: 100;
+    }
+
+    .w3-input {
+        padding: 15px;
+        display: block;
+        border: none;
+        border-bottom: 2.7px solid darkred;
+    }
+
+    .w3-border-red {
+        border-color: red;
+        background-color: rgba(168,0,0,0.06);
+        border-radius: 15px 15px 10px 10px;
+        outline: none;
+        box-shadow: -2px 5px 3px -2px #ff0000d4;
     }
 </style>
 <form id="FormLayout" action="~/PublicUser/ProcessLoverRegisterTwo?Name=@Name&Phone=@Phone&Email=@Email&Address=@Address" method="post">
@@ -56,7 +78,7 @@
         </select><br /><br />
         <select class="w3-select w3-border-red" id="selection" name="TownID" style="width:200px"></select><br /><br /><br />
     </center>
-    <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Next">
+    <input id="ButtonLayout" class="w3-input" type="submit" value="Next">
 </form>
 <script>
     window.onload = onloadSelect();
