@@ -11,24 +11,53 @@
 }
 
 <style>
+    body {
+        background-color: rgba(168,0,0,0.02);
+    }
     #ButtonLayout {
-        margin-left: 30%;
-        border-radius: 40px;
-        width: 200px;
-        background-color: red;
+        margin-left: 7%;
+        border-radius: 20px;
+        width: 230px;
+        background-color: rgba(255,0,0,0.9);
         padding-left: 20px;
         padding-right: 20px;
         color: white;
+        border: 1px solid rgba(168,0,0,0.9);
+        text-align: center;
+        box-shadow: 5px 5px 10px rgba(168,0,0,0.5),-5px -5px 10px #fff;
     }
 
     #FormLayout {
         z-index: 100;
+        
+    }
+    .w3-input {
+        padding: 5%;
+       
+    }
+    .w3-white {
+        height: 35px;
+        background: rgba(168,0,0,0.09);
+        border: none;       
+        outline: none;
+        border-radius: 20px;
+        box-shadow: 5px 5px 10px rgba(168,0,0,0.7),-5px -5px 10px #fff;
+        padding-left: 8px;
+        padding: 10%;
+        color: red;
+    }
+    .w3-white:hover {
+        border-color: red;
+        background-color: rgba(168,0,0,0.06);
+        border-radius: 15px 15px 10px 10px;
+        outline: none;
+        box-shadow: -2px 5px 3px -2px #ff0000d4;
     }
 </style>
-<form id="FormLayout" action="~/PublicUser/ProcessLoginForm" method="post">
+<form id="FormLayout" action="~/PublicUser/ProcessLoginForm" method="post"><br /><br />
     <center>
-        <input class="w3-input w3-animate-input w3-border-red" placeholder="Phone" type="number" name="Phone" style="width:200px" required><br>
-        <input class="w3-input w3-animate-input w3-border-red" placeholder="Password" type="number" name="Pin" style="width:200px" required><br><br>
+        <input class="w3-input w3-animate-input w3-white w3-text-deep-orange" placeholder="Phone" type="number" name="Phone" style="width:230px" required><br>
+        <input class="w3-input w3-animate-input w3-white w3-text-deep-orange" placeholder="Password" type="number" name="Pin" style="width:230px" required><br><br>
     </center>
     <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Next">
 </form>

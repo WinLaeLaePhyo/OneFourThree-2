@@ -145,13 +145,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Image\1432.png" />
     <Content Include="Image\DefaultProfile.png" />
     <Content Include="Image\heartIcon.png" />
     <Content Include="Image\HomeIcon.png" />
+    <Content Include="Image\love.png" />
+    <Content Include="Image\lovesai.png" />
     <Content Include="Image\male.png" />
     <Content Include="Image\mapIcon.png" />
     <Content Include="Image\meIcon.png" />
     <Content Include="Image\registerBackground.png" />
+    <Content Include="Image\sai.png" />
     <Content Include="Image\sampleProfilePicture.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
