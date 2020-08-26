@@ -54,6 +54,7 @@
             box-shadow: -2px 5px 3px -2px #ff0000d4;
         }*/
 </style>
+<<<<<<< Updated upstream
 <form id="FormLayout" action="~/PublicUser/ProcessLoginForm" method="post"><br /><br />
     <center>
         <input class="w3-input w3-animate-input w3-white w3-text-deep-orange" placeholder="Phone" type="number" name="Phone" style="width:230px" required><br>
@@ -61,3 +62,34 @@
     </center>
     <input id="ButtonLayout" class="w3-input" type="submit" value="Next">
 </form>
+=======
+<form id="FormLayout" action="~/PublicUser/ProcessLoginForm" method="post">
+    @{
+        HttpCookie reqCookies = Request.Cookies["userInfo"];
+        if (reqCookies != null)
+        {
+            <center>
+                <input class="w3-input w3-animate-input w3-border-red" value="@reqCookies["Phone"].ToString()" placeholder="Phone" type="number" name="Phone" style="width:200px" required><br>
+                <input class="w3-input w3-animate-input w3-border-red" value="@reqCookies["Pin"].ToString()" placeholder="Password" type="number" name="Pin" style="width:200px" required><br><br>
+            </center>
+        }
+        else
+        {
+            <center>
+                <input class="w3-input w3-animate-input w3-border-red" placeholder="Phone" type="number" name="Phone" style="width:200px" required><br>
+                <input class="w3-input w3-animate-input w3-border-red" placeholder="Password" type="number" name="Pin" style="width:200px" required><br><br>
+            </center>
+            }
+        }
+        <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Next">
+    </form>
+<script>
+
+    document.onload = autoSubmitForm();
+    function autoSubmitForm() {
+        if (document.getElementById("myPhone").value.length >= '1') {
+            document.forms["myForm"].submit();
+        }
+    }
+</script>
+>>>>>>> Stashed changes

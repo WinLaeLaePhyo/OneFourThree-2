@@ -1,0 +1,68 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "ConnectedLover";
+    Layout = "~/Views/Shared/Lover.cshtml";
+    DBFront df = new DBFront();
+    int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    DataTable dt1 = df.getAllByQuery("select * from RequesterReceiverConnection where Receiver=" + CurrentUserID);
+}
+<style>
+    #Div4Layout {
+        align-content: center;
+        font-size: 15px;
+        box-shadow: 1px 1px 5px darkred;
+        padding: 10px;
+        color: darkred;
+        height: 40px;
+        margin-top: 20px;
+    }
+    center img {
+        border: 1px solid darkred;
+        border-radius: 50%;
+    }
+</style><br /><br />
+@if (df.CheckByQuery("select * from RequesterReceiverConnection where Requester=" + CurrentUserID))
+{
+    int LoverID = df.getIntByQuery("select * from RequesterReceiverConnection where Requester=" + CurrentUserID, "Receiver");
+    string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + LoverID, "Name");
+    <center>
+        @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + LoverID))
+        {
+            <img class="img-fluid" src="~/ProfilePicture/@ProfilePicture" width="120">
+        }
+        else
+        {
+            <img class="img-fluid" src="~/Image/DefaultProfile.png" width="120">
+        }
+    </center>
+    <hr />
+    <br />
+    <div style="width:90%;margin-left: 5%;">
+        <div id="Div4Layout">Call To @df.getStringByQuery("select * from Lover where ID="+LoverID,"Name")</div>
+        <div id="Div4Layout">View On Map</div>
+        <div id="Div4Layout">Chat with @df.getStringByQuery("select * from Lover where ID=" + LoverID, "Name")</div>
+    </div>
+}
+else
+{
+    int LoverID = df.getIntByQuery("select * from RequesterReceiverConnection where Receiver=" + CurrentUserID, "Requester");
+    string ProfilePicture = df.getStringByQuery("select * from LoverProfilePicture where LoverID=" + LoverID, "Name");
+    <center>
+        @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + LoverID))
+        {
+            <img class="img-fluid" src="~/ProfilePicture/@ProfilePicture" width="120">
+        }
+        else
+        {
+            <img class="img-fluid" src="~/Image/DefaultProfile.png" width="120">
+        }
+    </center>
+    <hr />
+    <br />
+    <div style="width:90%;margin-left: 5%;">
+        <div id="Div4Layout">Call To @df.getStringByQuery("select * from Lover where ID=" + LoverID, "Name")</div>
+        <div id="Div4Layout">View On Map</div>
+        <div id="Div4Layout">Chat with @df.getStringByQuery("select * from Lover where ID=" + LoverID, "Name")</div>
+    </div>
+}

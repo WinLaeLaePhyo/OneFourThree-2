@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="constr-Web.config Connection String" description="constr Connection String used in web.config by the application to access the database." defaultValue="Data Source=trust.c1wbbbd2a1g0.us-west-2.rds.amazonaws.com;User ID=root;Password=naunglin;Initial Catalog=OneFourThree" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\acer\\source\\repos\\OneFourThree\\OneFourThree\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='constr']/@connectionString" />
+  </parameter>
+</parameters>

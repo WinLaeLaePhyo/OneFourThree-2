@@ -16,7 +16,7 @@ namespace OneFourThree
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "PublicUser", action = "LoginForm", id = UrlParameter.Optional }
+                defaults: new { controller = "PublicUser", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

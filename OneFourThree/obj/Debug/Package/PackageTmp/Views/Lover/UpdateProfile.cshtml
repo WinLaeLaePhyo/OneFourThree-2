@@ -1,0 +1,128 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "AboutMe";
+    Layout = "~/Views/Shared/Lover.cshtml";
+    if (TempData["Message"] != null)
+    {
+        <script>
+        window.alert('@Html.Raw(TempData["Message"])');
+        </script>
+    }
+    int CurrentUserID = Convert.ToInt32(Session["CurrentUserID"]);
+    DBFront df = new DBFront();
+    DataTable dt = df.getAllByQuery("select *,Convert(nvarchar(max),decryptByPassPhrase('root@',Phone)) as LPhone from Lover where ID=" + CurrentUserID);
+}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+    center img {
+        border: 1px solid darkred;
+        border-radius: 50%;
+    }
+
+    #ContentLayout {
+        font-size: 15px;
+        color: darkblue;
+        overflow: auto;
+    }
+
+    #ListLayout {
+        align-content: center;
+        font-size: 15px;
+        box-shadow: 1px 1px 5px darkred;
+        padding: 15px;
+        color: darkred;
+        margin: 20px;
+    }
+
+        #ListLayout:hover {
+            box-shadow: 1px 1px 7px red;
+        }
+
+        #ListLayout i {
+            margin-right: 5%;
+            color: darkblue;
+            margin-left: 3%;
+        }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    p {
+        color: black;
+    }
+
+    table {
+        margin-top: 20px;
+    }
+
+    th {
+        padding: 10px;
+    }
+
+    body {
+        background-color: rgba(255,0,0,0.005);
+    }
+
+    a {
+        color: darkred;
+    }
+
+    #overflow {
+        opacity: 0.7;
+    }
+
+    hr {
+        border-color: darkred;
+    }
+
+    input {
+        border-bottom: 1px solid red;
+    }
+</style>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+@{ foreach (DataRow rows in dt.Rows)
+    {
+        using (Html.BeginForm("ProcessUpdateProfile", "Lover", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div style="width: 90%;overflow:auto;margin-top:50px;">
+                <center>
+                    <div style="max-width:25%;max-height:25%">
+                        <center>
+                            @if (df.CheckByQuery("select * from LoverProfilePicture where LoverID=" + CurrentUserID))
+                            {
+                                string Name = df.getStringByQuery("select * from LoverProfilePicture where LoverID="+CurrentUserID ,"Name");
+                                <img class="img-fluid" id="output" src="~/ProfilePicture/@Name" width="100%"><br /><br>
+                            }
+                            else
+                            {
+                                <img class="img-fluid" id="output" src="~/Image/meIcon.png"s width="100%"><br /><br>
+                            }
+                        </center>
+                    </div>
+                    <input type="file" accept="image/*" name="postedFile" id="file" onchange="loadFile(event)" style="display: none;">
+                    <p id="overflow"><label for="file" style="cursor: pointer;padding:10px;padding-left: 30px;padding-right:30px;background-color: red;color:white;border-radius:5px;">Profile ရွေးမည်</label></p>
+                </center>
+            </div>
+            <div style="width: 90%;margin-left: 5%;">
+                <div id="ContentLayout">
+                    <div id="ListLayout">Your Name : @rows["Name"]<input type="text" name="Name" class="w3-input" placeholder="New Name" /></div>
+                    <div id="ListLayout">Your Phone : @rows["LPhone"]<input type="number" name="Phone" class="w3-input" placeholder="New Phone" /></div>
+                    <div id="ListLayout">Your Address : @rows["Address"]<input type="text" name="Address" class="w3-input" placeholder="New Address" /></div>
+                    <div id="ListLayout">
+                        <input type="submit" class="w3-input w3-red" value="Update" />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+
+
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>

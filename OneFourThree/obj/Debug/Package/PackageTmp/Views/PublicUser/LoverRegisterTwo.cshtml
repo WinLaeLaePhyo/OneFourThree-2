@@ -1,0 +1,92 @@
+﻿@using System.Data;
+@using OneFourThree.App_Code;
+@{
+    ViewBag.Title = "LoverRegisterTwo";
+    Layout = "~/Views/Shared/Index.cshtml";
+    string Name = TempData["Name"].ToString();
+    string Phone = TempData["Phone"].ToString();
+    string Email = TempData["Email"].ToString();
+    string Address = TempData["Address"].ToString();
+    DBFront df = new DBFront();
+    DataTable dt = df.getAllByQuery("select * from StateRegion");
+}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<style>
+    #ButtonLayout {
+        margin-left: 30%;
+        border-radius: 40px;
+        width: 200px;
+        background-color: red;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: white;
+    }
+
+    #FormLayout {
+        z-index: 100;
+    }
+</style>
+<form id="FormLayout" action="~/PublicUser/ProcessLoverRegisterTwo?Name=@Name&Phone=@Phone&Email=@Email&Address=@Address" method="post">
+    <center>
+        <input class="w3-input w3-animate-input w3-border-red" placeholder="Height" type="text" name="Height" style="width:200px" required><br>
+        <select class="w3-select w3-border-red" name="LoverType" style="width:200px">
+            <option value="">Choose Type</option>
+            <option value="Slim">Slim</option>
+            <option value="Fit">Fit</option>
+            <option value="Normal">Normal</option>
+            <option value="Fatty">Fatty</option>
+            <option value="Ultra Fatty">Ultra Fatty</option>
+        </select><br /><br />
+
+        <select class="w3-select w3-border-red" id="mySelect" style="width:200px">
+            <option>ကချင်</option>
+            <option>ကယား</option>
+            <option>ကရင်</option>
+            <option>ချင်း</option>
+            <option>မွန်</option>
+            <option>ရခိုင်</option>
+            <option>ရှမ်း</option>
+            <option>တနင်းသာရီ</option>
+            <option>ရန်ကုန်</option>
+            <option>မန္တလေး</option>
+            <option>မကွေး</option>
+            <option>ပဲခူး</option>
+            <option>ဧရာ၀တီ</option>
+            <option>စစ်ကိုင်း</option>
+        </select><br /><br />
+        <select class="w3-select w3-border-red" id="selection" name="TownID" style="width:200px"></select><br /><br /><br />
+    </center>
+    <input id="ButtonLayout" class="w3-input w3-animate-input" type="submit" value="Next">
+</form>
+<script>
+    window.onload = onloadSelect();
+    var select = document.getElementById("selection");
+    var town = [];
+
+    function onloadSelect() {
+        $.getJSON("https://www.myanmaritstar.co/PublicUser/GetTownByStateRegionID", { StateRegionID: 1 }, function (data) {
+            for (x in data) {
+                var option = document.createElement("option");
+                var val = document.createTextNode(data[x].Element2);
+                option.appendChild(val);
+                option.setAttribute('value', data[x].Element1);
+                select.appendChild(option);
+            }
+        });
+    }
+    $("#mySelect").change(function () {
+
+        var index = document.getElementById("mySelect").selectedIndex + 1;
+        $.getJSON("https://www.myanmaritstar.co/PublicUser/GetTownByStateRegionID", { StateRegionID: index }, function (data) {
+            select.length = 0;
+            for (x in data) {
+                var option = document.createElement("option");
+                var val = document.createTextNode(data[x].Element2);
+                option.appendChild(val);
+                option.setAttribute('value', data[x].Element1);
+                select.appendChild(option);
+            }
+        });
+    });
+
+</script>
